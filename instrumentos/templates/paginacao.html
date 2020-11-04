@@ -1,0 +1,108 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link rel="stylesheet" type="text/css" href="{% static 'produtos/css/bootstrap.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'produtos/css/styles.css' %}" />
+
+    <link rel="stylesheet" type="text/css" href="{% static 'produtos/css/jquery-ui.css' %}">
+
+    <title>Trabalho</title>
+</head>
+<body>
+    <nav class="site-header sticky-top py-1">
+        <div class="container d-flex flex-column flex-md-row justify-content-between">
+            <a class="py-2" href="#">
+                <span class="badge badge-info">Loja de música!!</span>
+            </a>
+            <ul class="pagination pagination-lg">
+
+                <li class="page-item active"><a class="page-link" href="{% url 'list_instrumentos' %}">Home</a></li>
+                <li class="page-item-disable"><a class="page-link" href="pagina1.html#">Pág. dos componentes</a></li>
+            </ul>
+
+        </div>
+    </nav>
+    <div class="position-relative overflow-hidden p-3 p-md-5 m-md-3 text-center bg-light" >
+        <form action="{% url 'paginacao_de_instrumento' %}" method="get" novalidate>
+            <div class="form-group row mb-2">
+                <label class="col-12 font-weight-bold" for="id_buscaPor">Nome do instrumento</label>
+                <div class="col-12">
+                    <input type="text" name="buscaPor" placeholder="nome">
+                </div>
+            </div>
+            <div class="form-group row" style="margin-top: 14px;">
+                <div class="col-12">
+                    {% csrf_token %}
+                    <button style="margin-top: 0px;" type="submit" class="btn btn-outline-secondary">Buscar</button>
+                </div>
+            </div>
+        </form>
+       <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th>Username</th>
+              <th>Descricao</th>
+              <th>Preco</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for instrumento in instrumentos %}
+              <tr>
+                <td>{{ instrumento.nome }}</td>
+                <td>{{ instrumento.descricao }}</td>
+                <td>{{ instrumento.preco }}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+
+         {% if instrumentos.has_other_pages %}
+            <ul class="pagination">
+                {% if  instrumentos.has_previous %}
+                    <li class="page-item"><a class="page-link" href="?pagina={{ produtos.previous_page_number }}&buscaPor={{ buscaPor }}">Anterior</a></li>
+                {% else %}
+                    <li class="page-item disabled"><a class="page-link" href="#" tabindex="-1">Anterior</a></li>
+                {% endif %}
+                {% for i in instrumentos.paginator.page_range %}
+                    {% if instrumentos.number == i %}
+                        <li class="page-item active"><a class="page-link" href="#">{{ i }} </a></li>
+                    {% else %}
+                        <li class="page-item"><a class="page-link" href="?pagina={{ i }}&buscaPor={{ buscaPor }}">{{ i }}</a></li>
+                    {% endif %}
+                {% endfor %}
+                {% if instrumentos.has_next %}
+                    <li class="page-item"><a class="page-link" href="?pagina={{ produtos.next_page_number }}&buscaPor={{ buscaPor }}">Próxima</a></li>
+                {% else %}
+                    <li class="page-item disabled"><a class="page-link" href="#" tabindex="-1">Próxima</a></li>
+                {% endif %}
+            </ul>
+        {% endif %}
+
+        <!--{% if instrumentos.has_other_pages %}
+          <ul class="pagination">
+            {% if instrumentos.has_previous %}
+              <li><a href="?page={{ users.previous_page_number }}">&laquo;</a></li>
+            {% else %}
+              <li class="disabled"><span>&laquo;</span></li>
+            {% endif %}
+            {% for i in instrumentos.paginator.page_range %}
+              {% if instrumentos.number == i %}
+                <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+              {% else %}
+                <li><a href="?page={{ i }}">{{ i }}</a></li>
+              {% endif %}
+            {% endfor %}
+            {% if instrumentos.has_next %}
+              <li><a href="?page={{ users.next_page_number }}">&raquo;</a></li>
+            {% else %}
+              <li class="disabled"><span>&raquo;</span></li>
+            {% endif %}
+          </ul>
+        {% endif %}-->
+    </div>
+</body>
+</html>

@@ -1,0 +1,272 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link rel="stylesheet" type="text/css" href="{% static 'produtos/css/bootstrap.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'produtos/css/styles.css' %}" />
+
+    <link rel="stylesheet" type="text/css" href="{% static 'produtos/css/jquery-ui.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'produtos/css/jquery-ui.css' %}">
+
+    <title>Trabalho</title>
+</head>
+<body>
+    <nav class="site-header sticky-top py-1">
+        <div class="container d-flex flex-column flex-md-row justify-content-between">
+            <a class="py-2" href="#">
+                <span class="badge badge-info">Loja de música!!</span>
+            </a>
+            <ul class="pagination pagination-lg">
+
+                <li class="page-item active"><a class="page-link" href="{% url 'list_instrumentos' %}">Home</a></li>
+                <li class="page-item-disable"><a class="page-link" href="instrumentos-form.html">Pág. dos componentes</a></li>
+            </ul>
+
+        </div>
+    </nav>
+    <div class="position-relative overflow-hidden p-3 p-md-5 m-md-3 text-center bg-light" >
+        <br>
+        <div class="row">
+            <div class="col-lg-12">
+                <h4 class="titulo mb-0">Cadastro de Instrumentos</h4>
+                <hr class="mt-2 mb-4">
+            </div>
+        </div>
+
+        <form  class= "needs-validation"  action ="{% url 'cadastra_produto' %}" method ="POST" novalidate>
+
+
+
+            <div class="form-group row mb-2">
+                <label for="id_nome" class="col-lg-2 col-form-label font-weight-bold">Nome</label>
+                <div class="col-lg-10">
+                    {{ form.nome }}
+            {#      <input type="text" name="nome"                                                            #}
+            {#             class="form-control form-control-sm is-valid" maxlength="120" required="" id="id_nome" required>     #}
+                    {% if form.nome.errors %}
+                        <div class="alert alert-danger mb-0" style="padding-top: 2px; padding-bottom: 2px;">
+                            {% for error in form.nome.errors %}
+                                <small>{{ error }}</small>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                    <div class= "invalid-feedback" > Preenchao campo </div>
+                </div>
+
+            </div>
+
+            <div class="form-group row mb-2">
+                <label for="id_descricao" class="col-lg-2 col-form-label font-weight-bold">Descricao</label>
+                <div class="col-lg-10">
+                    {{ form.descricao }}
+            {#      <input type="text" name="descricao"                                                            #}
+            {#             class="form-control form-control-sm" maxlength="120" required="" id="id_descricao" required>     #}
+                    {% if form.descricao.errors %}
+                        <div class="alert alert-danger mb-0" style="padding-top: 2px; padding-bottom: 2px;">
+                            {% for error in form.descricao.errors %}
+                                <small>{{ error }}</small>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                    <div class= "invalid-feedback" > Preenchao campo </div>
+                </div>
+            </div>
+
+            <div class="form-group row mb-2">
+                <label for="id_preco" class="col-lg-2 col-form-label font-weight-bold">Preço</label>
+                <div class="col-lg-10">
+    {#                {{ form.preco }}#}
+                    <input type="text"
+                           class="form-control form-control-sm"
+                           name="preco"
+                           id="id_preco"
+                           value="{% if form.preco.value != None %}{{ form.preco.value|stringformat:'s' }}{% endif %}"
+                           maxlength="120"
+                           required>
+                    {% if form.preco.errors %}
+                        <div class="alert alert-danger mb-0" style="padding-top: 2px; padding-bottom: 2px;">
+                            {% for error in form.preco.errors %}
+                                <small>{{ error }}</small>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                    <div class= "invalid-feedback" > Preenchao campo </div>
+                </div>
+            </div>
+
+            <div class="form-group row mb-2">
+                <label for="id_quantidade" class="col-lg-2 col-form-label font-weight-bold">Quantidade</label>
+                <div class="col-lg-10">
+                    {{ form.quantidade }}
+                    <!-- <input type="text"
+                           class="form-control form-control-sm"
+                           name="quantidade"
+                           id="id_quantidade"
+                           value="{% if form.quantidade.value != None %}{{ form.quantidade.value}}{% endif %}"
+                           maxlength="120"
+                           required>-->
+                    {% if form.quantidade.errors %}
+                        <div class="alert alert-danger mb-0" style="padding-top: 2px; padding-bottom: 2px;">
+                            {% for error in form.quantidade.errors %}
+                                <small>{{ error }}</small>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                    <div class= "invalid-feedback" > Preenchao campo </div>
+                </div>
+            </div>
+
+            <div class="form-group row" style="margin-top: 20px;">
+                <div class="col-lg-10 offset-lg-2">
+                    {% csrf_token %}
+
+                    <button type="" id="inclusao"  action="{% url 'cadastra_produto' %}" class="btn btn-primary" method="POST"><img src="{% static 'produtos/images/skin/database_save.png' %}">
+                        Cadastra Instrumento
+                    </button>
+                </div>
+
+            </div>
+
+        </form>
+
+         <br>
+        {% if lista %}
+            <div class="row">
+                <div class="col-12">
+                    <div class="table-responsive">
+                        <table id="tabela" style="width:100%" class="table table-striped table-sm table-bordered">
+                            <thead>
+                                <tr>
+                                    <th class="text-center">Número</th>
+                                    <th class="text-center">Nome</th>
+                                    <th class="text-center">Preço</th>
+                                    <th class="text-center">descricao</th>
+                                    <th class="text-center">Quantidade</th>
+                                    <th class="text-center">Remover</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for item in lista %}
+                                    <tr>
+                                        <td width="10%" class="text-center">
+                                            {{ item.instrumento.id }}
+                                        </td>
+                                        <td width="35%">
+                                            {{ item.instrumento.nome }}
+                                        </td>
+                                        <td width="15%" class="text-center">
+                                            {{ item.instrumento.preco }}
+                                        </td>
+                                        <td width="15%" class="text-center">
+                                            {{ item.instrumento.descricao }}
+                                        </td>
+                                        <td width="15%" class="text-center">
+                                            <input type="text" value=" {{ item.instrumento.quantidade}}" id="id_quantidade" name="quantidade">
+                                        </td>
+                                        <td width="10%" class="text-center">
+                                            <form style="margin-bottom: 0px;"
+                                                  action ="{% url 'delete_instrumento' item.instrumento.id %}"
+                                                  method ="post" novalidate>
+                                                {% csrf_token %}
+    {#                                          {{ item.RemoveInstrumentoForm.instrumento_id }}#}
+                                                <button style="margin-top: 0px; margin-bottom: 0px; padding-top: 3px; padding-bottom: 3px;"
+                                                        type="button" class="btn btn-sm btn-danger btn-remove" {% if not item.pode_remover %}  {% endif %}>
+                                                    <img src="{% static 'produtos/images/skin/database_delete.png' %}">
+                                                    Remover
+                                                </button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                <tr>
+                                    <td colspan="5" width="90%" class="text-left">
+                                        <strong style="margin-left: 10px;">Total da quantidade ...</strong>
+                                    </td>
+                                    <td width="10%" class="text-right">
+                                        <strong id="valor-de-quantidade">{{ valor_de_quantidade }}</strong>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+
+
+        <br/>
+        <br/>
+    </div>
+
+    <script src="{% static 'produtos/js/jquery-3.2.1.js' %}"></script>
+    <script src="{% static 'produtos/js/jquery-ui.min.js' %}"></script>
+    <script src="{% static 'produtos/js/jquery.mask.js' %}"></script>
+    <script src="{% static 'produtos/js/popper.js' %}"></script>
+    <script src="{% static 'produtos/js/bootstrap.js' %}"></script>
+    <script src="{% static 'produtos/js/script.js' %}"></script>
+    <script>
+            $(document).ready(function(){
+                $(document).keypress(function(event) { var keycode = event.keyCode || event.which; if(keycode =='9') {$.post("{#%url 'atualiza_produto'  item.instrumento.id%}") ; } })
+                var lista = {{ ids_dos_instrumentos }}
+
+                $('tbody').on('click', 'button', function() {
+                    var form = $(this).parent()
+                    var tr = $(form).parent().parent()
+                    var indice = $(tr).index()
+                    // alert(indice)
+                    var input_hidden = "<input type='hidden' name='instrumento_id' value='" + lista[indice] + "' />"
+                    // alert(input_hidden)
+                    $(form).append(input_hidden)
+
+                    var url = $(form).attr('action')
+                    var formData = $(form).serializeArray()
+                    $.post(url, formData, function(resultado) {
+                         alert($(resultado).html())
+                        // alert($(resultado).html())
+                        // alert($(resultado).text())
+                        var total = $(resultado).find('#valor-de-quantidade')
+                        // alert(total)
+                        // alert($(total).text())
+                        $(tr).fadeTo('slow', 0.3, function() {
+                            $(tr).remove()
+                            $('#valor-de-quantidade').html($(total).text())
+                            // alert(lista)
+                            lista.splice(indice, 1)
+                            // alert(lista)
+                        })
+                    })
+                })
+
+                $('#inclusao').submit(function(e) {
+                    console.log("jr")
+                    e.preventDefault()
+                    var url = $(this).attr('action')
+                    var formData = $(this).serializeArray()
+                    $.post(url, formData, function(resposta) {
+
+                        var conteudo = $(resposta).find('#novo-tr').find('tr:first')
+                        // alert($(conteudo).html())
+                        var total = $(resposta).find('#valor-de-quantidade')
+                        // alert($(total).text())
+                        var id = $(resposta).find('#id-quantidade')
+                        id = parseInt($(id).text(), 10)
+                        // alert(id)
+
+                        $('#tabela tbody tr:last').before("<tr style='display: none'>" + $(conteudo).html() + "</tr>")
+                        // alert('apos before')
+                        $('#tabela tbody tr:hidden').fadeIn('slow')
+                        // alert('apos fadeIn')
+                        $('#valor-da-quantidade').html($(total).text())
+                        // alert(lista)
+                        lista.push(id)
+                        // alert(lista)
+                    })
+                })
+
+            });
+    </script>
+</body>
+</html>

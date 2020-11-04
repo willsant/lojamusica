@@ -1,0 +1,46 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link rel="stylesheet" type="text/css" href="{% static 'produtos/css/bootstrap.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'produtos/css/styles.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'produtos/css/jquery-ui.css' %}">
+
+    <title>Trabalho</title>
+</head>
+<body>
+    <nav class="site-header sticky-top py-1">
+        <div class="container d-flex flex-column flex-md-row justify-content-between">
+            <a class="py-2" href="#">
+                <span class="badge badge-info">Loja de música!!</span>
+            </a>
+            <ul class="pagination pagination-lg">
+
+                <li class="page-item active"><a class="page-link" href="#">Home</a></li>
+                <li class="page-item-disable"><a class="page-link" href="pagina1.html#">Pág. dos componentes</a></li>
+            </ul>
+
+        </div>
+    </nav>
+    <div class="position-relative overflow-hidden p-3 p-md-5 m-md-3 text-center bg-light" >
+
+        <div class="form-control">
+                 <h1> New/Update instrumento</h1>
+
+                <form method="post">
+                    {%  csrf_token %}
+                    {{ form }}
+                    <button type="submit">Salvar</button>
+                </form>
+
+                {% if instrumento %}
+                    <a href="{%url 'delete_instrumento' instrumento.id%}">Deleta</a>
+                {% endif %}
+        </div>
+    </div>
+
+</body>
+</html>

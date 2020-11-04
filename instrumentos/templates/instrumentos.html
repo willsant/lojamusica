@@ -1,0 +1,48 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link rel="stylesheet" type="text/css" href="{% static 'produtos/css/bootstrap.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'produtos/css/styles.css' %}" />
+
+    <link rel="stylesheet" type="text/css" href="{% static 'produtos/css/jquery-ui.css' %}">
+
+    <title>Trabalho</title>
+</head>
+<body>
+    <nav class="site-header sticky-top py-1">
+        <div class="container d-flex flex-column flex-md-row justify-content-between">
+            <a class="py-2" href="#">
+                <span class="badge badge-info">Loja de música!!</span>
+            </a>
+            <ul class="pagination pagination-lg">
+
+                <li class="page-item active"><a class="page-link" href="index.html#">Home</a></li>
+                <li class="page-item-disable"><a class="page-link" href="pagina1.html#">Pág. dos componentes</a></li>
+            </ul>
+
+        </div>
+    </nav>
+    <div class="position-relative overflow-hidden p-3 p-md-5 m-md-3 text-center bg-light" >
+         <ul>
+            {% for instrumento in instrumentos %}
+                <a href="{% url 'update_instrumento' instrumento.id %}">
+                    <li> {{  instrumento.nome }}</li>
+                </a>
+            {% endfor %}
+         </ul>
+
+         <a href="{% url 'create_instrumento' %}">Novo instrumento</a>
+         <a href="{% url 'cadastra_produto'  %}">Cadastra instrumento</a>
+         <a href="{% url 'paginacao_de_instrumento' %}">Paginacao</a>
+         <a href="{% url 'index' %}">Inicio</a>
+
+    </div>
+</body>
+</html>
+
+
+
